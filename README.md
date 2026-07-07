@@ -134,6 +134,13 @@ http://localhost:5173
 ```
 
 ---
+## Setup Assumptions
+
+- Python 3.11 or later is installed.
+- Node.js and npm are installed.
+- SQLite is used as the local database and is created automatically on first run.
+- Uploaded files are stored locally in the `backend/uploads` directory.
+- The frontend communicates with the backend through HTTP requests using Axios.
 
 ## Database Design
 
@@ -159,6 +166,41 @@ The actual uploaded files are stored inside the **uploads/** directory.
 4. Metadata is saved in SQLite.
 5. React retrieves document metadata through the API.
 6. Users can search, browse and download documents.
+
+---
+## Key Tradeoffs Due to Time Limit
+
+- Local file storage was used instead of cloud storage services such as Amazon S3.
+- Authentication and user management were not implemented.
+- Search uses a simple substring match instead of advanced or fuzzy search.
+- Pagination uses a fixed page size.
+- The frontend focuses on core functionality over advanced UI styling and animations.
+- Basic validation and error handling were implemented, while more comprehensive validation was left out to prioritize core features.
+
+---
+## Design Questions
+
+### 1. Multiple Uploads
+
+The application uploads multiple documents in a single multipart/form-data request. Each uploaded file is processed one by one on the backend. The file is saved to local storage, and its metadata (title, filename, size and upload date) is stored in SQLite. Using a single request reduces network overhead compared to uploading each file separately. In a production environment, limits on the number or size of uploaded files would be added.
+
+---
+
+### 2. Streaming
+
+Streaming allows files to be transferred in smaller chunks rather than loading the complete file into memory. This keeps memory usage low and allows the application to handle larger files more efficiently. Loading an entire file into memory before sending it could consume unnecessary memory and reduce server scalability.
+
+---
+
+### 3. Moving to S3
+
+If the application used Amazon S3, the backend would upload files to an S3 bucket instead of the local uploads folder. The SQLite database would store the S3 object key or URL instead of a local filename. The backend could either stream files from S3 or generate pre-signed URLs so clients can download files directly from S3.
+
+---
+
+### 4. Frontend UX
+
+With additional development time, I would add document previews for supported file types such as PDFs and images. I would also implement drag-and-drop uploads, upload progress indicators, toast notifications, loading animations and a more polished responsive interface to improve the overall user experience.
 
 ---
 
