@@ -1,0 +1,24 @@
+# Python
+backend/.venv/
+backend/__pycache__/
+*.pyc
+
+# Database
+backend/documents.db
+
+# Uploaded files
+backend/uploads/
+
+# Node
+frontend/node_modules/
+
+# React
+frontend/dist/
+
+# IDE
+.idea/
+.vscode/
+
+# OS
+.DS_Store
+Thumbs.db
